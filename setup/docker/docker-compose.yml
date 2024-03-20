@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi-app-develop-container
+    image: fastapi-app-develop-image
+    command: cd /app/ && make run
+    ports:
+      - 8080:8080
+    env_file: ../../.env
+    depends_on:
+      - database
+
+  database:
+    image: postgres:12.1-alpine
+    container_name: database-app-container
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-fastapi_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fastapi_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-fast_api}
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres_data:
