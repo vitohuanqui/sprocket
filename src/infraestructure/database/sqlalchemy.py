@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 import databases
+from sqlalchemy import NullPool
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 
@@ -37,9 +38,8 @@ async def disconnect_database():
 
 
 def init_database() -> None:
-    import todolist.infra.database.models  # noqa: F401
-
-    metadata.bind = create_engine(_SETTINGS.DATABASE_PG_URL)
+    import src.infraestructure.database.models  # noqa: F401
+    metadata.bind = create_engine(_SETTINGS.DATABASE_URL, poolclass=NullPool)
 
 
 async def truncate_database() -> None:

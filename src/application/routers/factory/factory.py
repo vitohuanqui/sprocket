@@ -2,7 +2,6 @@ from typing import List
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse  # type: ignore
 from fastapi.routing import APIRouter
-from pydantic import BaseModel
 
 from src.application.container import get_dependencies
 from src.domain.entities.factory import (
@@ -19,16 +18,6 @@ repository = get_dependencies().factory_repository
 router = APIRouter(default_response_class=JSONResponse)
 
 
-# View Models
-class EmailNotUniqueResponse(BaseModel):
-    class Detail(BaseModel):
-        msg: str
-        email: str
-
-    detail: Detail
-
-
-# Handlers
 @router.post(
     "",
     response_class=JSONResponse,
@@ -39,6 +28,7 @@ class EmailNotUniqueResponse(BaseModel):
 @database.transaction()
 async def create(dto: CreateFactoryDto):
     return await factory_service.create(repository, dto)
+
 
 @router.delete(
     "/{factory_id}",

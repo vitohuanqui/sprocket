@@ -35,8 +35,8 @@ class HealthCheck(BaseModel):
 def health_check():
     settings = get_settings()
     return {
-        "title": settings.WEB_APP_TITLE,
-        "description": settings.WEB_APP_DESCRIPTION,
-        "version": settings.WEB_APP_VERSION,
+        "title": settings.TITLE,
+        "description": settings.DESCRIPTION,
+        "version": settings.VERSION,
         "status": StatusEnum.OK,
     }

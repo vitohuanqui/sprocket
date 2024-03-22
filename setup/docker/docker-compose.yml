@@ -1,30 +1,46 @@
-version: "3"
+version: "3.8"
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: fastapi-app-develop-container
-    image: fastapi-app-develop-image
-    command: cd /app/ && make run
+    image: fastapi-app-sprocket-image
+    container_name: fastapi-app-sprocket-container
+    environment:
+      - DEBUG=True
+    volumes:
+      - ../../.:/app/.
     ports:
-      - 8080:8080
-    env_file: ../../.env
+      - 8000:8000
+    build:
+      context: ../../
+      dockerfile: setup/docker/Dockerfile
+#    command: python start_server.py
+    command: tail -f /dev/null
     depends_on:
-      - database
+      - database-app-container
+    networks:
+      sprocketnetwork:
+        aliases:
+          - app-container
 
-  database:
-    image: postgres:12.1-alpine
+  database-app-container:
+    image: postgres:14.4
     container_name: database-app-container
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-fastapi_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fastapi_pass}
-      POSTGRES_DB: ${POSTGRES_DB:-fast_api}
+      POSTGRES_USER: fastapi
+      POSTGRES_PASSWORD: fastapi
+      POSTGRES_DB: fastapi
+    networks:
+      sprocketnetwork:
+        aliases:
+          - app-database
     ports:
       - 5432:5432
 
 volumes:
   postgres_data:
+
+networks:
+  sprocketnetwork:
+    external: true

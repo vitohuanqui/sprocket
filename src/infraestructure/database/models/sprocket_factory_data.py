@@ -1,5 +1,5 @@
 from sqlalchemy.schema import Column, Table
-from sqlalchemy.types import Integer, Text, Bool, DateTime
+from sqlalchemy.types import Integer, Text, Boolean, DateTime
 
 from src.infraestructure.database.sqlalchemy import metadata
 
@@ -10,6 +10,6 @@ SprocketFactoryData = Table(
     Column("sprocket_type_id", Integer),
     Column("factory_id", Integer),
     Column("production", Integer),
-    Column("is_goal", Bool),
+    Column("is_goal", Boolean),
     Column("time", DateTime(timezone=True)),
 )

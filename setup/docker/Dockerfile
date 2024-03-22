@@ -1,20 +1,25 @@
-FROM python:3.8.2-alpine
+FROM python:3.11-slim
 
-RUN apk update && apk add --no-cache gcc musl-dev libffi-dev openssl-dev make libxslt-dev libxml2-dev
+ENV PYTHON_VERSION=3.11.8 \
+  APP_PATH=/home/python/app \
+  POETRY_VIRTUALENVS_CREATE=false \
+  PATH=/home/python/.local/lib/python3.11/site-packages:/usr/local/bin:/home/python:/home/python/app/bin:$PATH
 
-RUN pip install pipenv
+RUN apt-get update -y && apt-get upgrade -y && apt-get install -y gcc \
+    gettext postgresql-client libpq-dev libjpeg-dev libopenjp2-7-dev
 
-# create root directory
+RUN pip install --no-cache-dir poetry
+
 RUN mkdir /app/
+WORKDIR /app/
+RUN pip install pip -U && pip install poetry -U
+RUN poetry config virtualenvs.create false
 
-# install dependicies
-COPY Pipfile app/Pipfile
-COPY Pipfile.lock app/Pipfile.lock
-RUN cd /app && pipenv install --dev --system --deploy --ignore-pipfile
 
-# copy all file to their specific directory
-COPY . /app/
+COPY ../../pyproject.toml /app/.
+COPY ../../poetry.lock /app/.
+RUN poetry install
 
-WORKDIR /app/src/
+VOLUME [ "/app/" ]
 
-ENV PYTHONPATH=/app/
+#CMD ["tail", "-f", "/dev/null"]

@@ -1,19 +1,18 @@
 from fastapi.applications import FastAPI
 from toolz import pipe
 
-from src.application.router import register_routers as register_routers
-from todolist.api.routers import register_routers as register_routers
-from todolist.config.environment import Settings
-from todolist.infra.database.sqlalchemy import connect_database, disconnect_database
-from todolist.infra.database.sqlalchemy import init_database as init_pgsql_db
+from src.application.routers import register_routers as register_routers
+from src.infraestructure.config.enviroment import Settings
+from src.infraestructure.database.sqlalchemy import connect_database, disconnect_database
+from src.infraestructure.database.sqlalchemy import init_database as init_pgsql_db
 
 
 def create_instance(settings: Settings) -> FastAPI:
     return FastAPI(
-        debug=settings.WEB_APP_DEBUG,
-        title=settings.WEB_APP_TITLE,
-        description=settings.WEB_APP_DESCRIPTION,
-        version=settings.WEB_APP_VERSION,
+        debug=settings.DEBUG,
+        title=settings.TITLE,
+        description=settings.DESCRIPTION,
+        version=settings.VERSION,
     )
 
 

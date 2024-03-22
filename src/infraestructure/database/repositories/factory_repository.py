@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Iterable
 
 from src.domain.entities.factory import Factory
 from src.infraestructure.database.models.factory import Factory as Model
@@ -10,6 +10,13 @@ async def get(id_: int) -> Optional[Factory]:
     result = await database.fetch_one(query)
 
     return Factory.parse_obj(dict(result)) if result else None
+
+
+async def get_all() -> Iterable[Factory]:
+    query = Model.select()
+    result = await database.fetch_all(query)
+
+    return (Factory.parse_obj(dict(r)) for r in result)
 
 
 async def persist(name: str) -> Factory:
