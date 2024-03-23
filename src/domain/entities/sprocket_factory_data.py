@@ -18,11 +18,10 @@ class SprocketFactoryData(BaseModel):
 
 
 class CreateSprocketFactoryDataDto(BaseModel):
-    is_goal: bool
     production: int
     factory_id: int
     sprocket_type_id: int
-    time: datetime
+    time: Optional[datetime]
 
     class Config:
         allow_mutation = False

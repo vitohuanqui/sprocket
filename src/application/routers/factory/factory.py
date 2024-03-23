@@ -43,7 +43,7 @@ async def create(dto: CreateFactoryDto):
 async def delete(factory_id: int):
     result = await factory_service.delete(repository, factory_id)
     status_code = 204 if result else 404
-    return JSONResponse(status_code=status_code)
+    return JSONResponse(status_code=status_code, content="Factory deleted")
 
 
 @router.get(
@@ -74,7 +74,7 @@ async def get_all():
 async def get(factory_id: int):
     item = await factory_service.get(repository, factory_id)
     if not item:
-        return JSONResponse(status_code=404)
+        return JSONResponse(status_code=404, content="Factory retrived")
     return item
 
 
@@ -93,4 +93,4 @@ async def update(
     dto: UpdateFactoryDto, factory_id: int
 ):
     item = await factory_service.update(repository, dto, factory_id)
-    return item if item else JSONResponse(status_code=404)
+    return item if item else JSONResponse(status_code=404, content="Factory not Found")
