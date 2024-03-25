@@ -1,3 +1,4 @@
+import json
 import logging
 from typing import Any, Dict, Iterable
 
@@ -28,9 +29,16 @@ async def _populate_table(
 
 
 async def _populate_data(db: Database) -> None:
-    values_sprocket_type = [
-    ]
-    values_factory = []
+    f = open('seed_sprocket_types.json')
+    values_sprocket_type = json.load(f)['sprockets']
+    f.close()
+    values_factory = [{
+        'name': 'Factory #1',
+        'url': 'third-app:8000/data'
+    },{
+        'name': 'Factory #2',
+        'url': 'third-app:8000/data'
+    }]
     await _populate_table(db, Factory, values_factory)
     await _populate_table(db, SprocketType, values_sprocket_type)
     for idx_factory, _ in enumerate(values_factory):
@@ -39,12 +47,26 @@ async def _populate_data(db: Database) -> None:
 
 
 async def _populate_sprocket_factory_data(db: Database, factory_id: int, sprocket_type_id: int) -> None:
-    values = [
-        {"msg": "Program new awesome web app", "is_done": True, "user_id": factory_id},
-        {"msg": "Play videogames", "is_done": True, "user_id": factory_id},
-        {"msg": "Wash dishes", "is_done": False, "user_id": factory_id},
-        {"msg": "Write blog post", "is_done": False, "user_id": factory_id},
-    ]
+    f = open('seed_factory_data.json')
+    values = []
+    json_values = json.load(f)['factories']
+    for factory in json_values:
+        for idx, val in enumerate(factory['factory']['chart_data']['sprocket_production_actual']):
+            values.append({
+                'production': val,
+                'time': factory['factory']['chart_data']['time'][idx],
+                'is_goal': False,
+                'factory_id': factory_id,
+                'sprocket_type_id': sprocket_type_id
+            })
+            values.append({
+                'production': factory['factory']['chart_data']['sprocket_production_goal'][idx],
+                'time': factory['factory']['chart_data']['time'][idx],
+                'is_goal': True,
+                'factory_id': factory_id,
+                'sprocket_type_id': sprocket_type_id
+            })
+    f.close()
     await _populate_table(db, SprocketFactoryData, values)
 
 

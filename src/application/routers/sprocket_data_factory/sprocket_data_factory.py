@@ -1,5 +1,6 @@
 from typing import List
 from fastapi.exceptions import HTTPException
+from fastapi.requests import Request
 from fastapi.responses import JSONResponse  # type: ignore
 from fastapi.routing import APIRouter
 
@@ -7,7 +8,7 @@ from src.application.container import get_dependencies
 from src.domain.entities.sprocket_factory_data import (
     SprocketFactoryData,
     CreateSprocketFactoryDataDto,
-    UpdateSprocketFactoryDataDto,
+    UpdateSprocketFactoryDataDto, RetrieveSprocketFactoryDataDto,
 )
 from src.domain.services import sprocket_factory_data_service, sprocket_service, factory_service
 # from src.domain.services.exceptions import *
@@ -51,15 +52,16 @@ async def delete(sprocket_type_id: int):
 @router.get(
     "",
     response_class=JSONResponse,
-    response_model=List[SprocketFactoryData],
+    response_model=List[RetrieveSprocketFactoryDataDto],
     status_code=200,
     responses={
         200: {"description": "Factories found"},
     },
 )
 @database.transaction()
-async def get_all():
-    return list(await sprocket_factory_data_service.get_all(repository))
+async def get_all(request: Request):
+    params = dict(request.query_params)
+    return list(await sprocket_factory_data_service.get_all(repository, params))
 
 
 @router.get(

@@ -60,3 +60,7 @@ ssh-dev:
 ssh-db-dev:
 	@echo "--> SSH dev server"
 	docker-compose -f setup/docker/docker-compose.yml exec database-app-container /bin/bash
+
+.PHONY: my_target
+ssh:
+	docker-compose -f setup/docker/docker-compose.yml exec $(dst) /bin/bash

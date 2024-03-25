@@ -13,14 +13,33 @@ services:
     build:
       context: ../../
       dockerfile: setup/docker/Dockerfile
-#    command: python start_server.py
-    command: tail -f /dev/null
+    command: python start_server.py
+#    command: tail -f /dev/null
     depends_on:
       - database-app-container
     networks:
       sprocketnetwork:
         aliases:
           - app-container
+
+  third-app:
+    image: thirdapi-sprocket-image
+    container_name: third-app-container
+    environment:
+      - DEBUG=True
+    volumes:
+      - ../../.:/app/.
+    build:
+      context: ../../
+      dockerfile: setup/docker/Dockerfile
+#    command: tail -f /dev/null
+    command: uvicorn start_api_third:app --reload --host=0.0.0.0 --port=8000
+    ports:
+      - 8001:8000
+    networks:
+      sprocketnetwork:
+        aliases:
+          - third-container
 
   database-app-container:
     image: postgres:14.4
@@ -37,6 +56,51 @@ services:
           - app-database
     ports:
       - 5432:5432
+
+  fast-api-redis:
+    container_name: fast-api-redis
+    image: redis
+    networks:
+      sprocketnetwork:
+        aliases:
+          - app-redis
+
+  celery-worker:
+    container_name: celery-worker
+    build:
+      context: ../../
+      dockerfile: setup/docker/Dockerfile
+    command: celery -A src.application.celery_worker worker --loglevel=info -B
+#    command: tail -f /dev/null
+    volumes:
+      - ../../.:/app/.
+    depends_on:
+      - fast-api-redis
+      - app
+      - database-app-container
+    networks:
+      sprocketnetwork:
+        aliases:
+          - celery-worker
+
+  flower:
+    container_name: flower
+    build:
+      context: ../../
+      dockerfile: setup/docker/Dockerfile
+    command: celery --broker=redis://app-redis:6379/0 flower --port=5555
+#    command: tail -f /dev/null
+    ports:
+      - 5555:5555
+    depends_on:
+      - app
+      - fast-api-redis
+      - celery-worker
+      - database-app-container
+    networks:
+      sprocketnetwork:
+        aliases:
+          - flower
 
 volumes:
   postgres_data:

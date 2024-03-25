@@ -21,7 +21,8 @@ class CreateSprocketFactoryDataDto(BaseModel):
     production: int
     factory_id: int
     sprocket_type_id: int
-    time: Optional[datetime]
+    time: Optional[datetime] = datetime.now
+    is_goal: Optional[bool] = False
 
     class Config:
         allow_mutation = False
@@ -30,6 +31,14 @@ class CreateSprocketFactoryDataDto(BaseModel):
 class UpdateSprocketFactoryDataDto(BaseModel):
     production: Optional[int]
     time: Optional[datetime]
+
+    class Config:
+        allow_mutation = False
+
+
+class RetrieveSprocketFactoryDataDto(BaseModel):
+    production: int
+    time: datetime
 
     class Config:
         allow_mutation = False
