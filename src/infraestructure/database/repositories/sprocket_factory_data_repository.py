@@ -6,8 +6,8 @@ from sqlalchemy import extract, func, select
 from src.domain.entities.factory import Factory
 from src.domain.entities.sprocket import SprocketType
 from src.domain.entities.sprocket_factory_data import (
-    CreateSprocketFactoryDataDto, RetrieveSprocketFactoryDataDto,
-    SprocketFactoryData, UpdateSprocketFactoryDataDto, ResponseFactoryDataDto)
+    CreateSprocketFactoryDataDto, ResponseFactoryDataDto, SprocketFactoryData,
+    UpdateSprocketFactoryDataDto)
 from src.infraestructure.database.models.sprocket_factory_data import \
     SprocketFactoryData as Model
 from src.infraestructure.database.sqlalchemy import database
@@ -46,7 +46,8 @@ async def get_all(
     if 'group_by' in query_params and query_params['group_by'] in MAPPING:
         select_list = [
             func.sum(Model.c.production).label('production'),
-            func.sum(Model.c.goal).label('goal')]
+            func.sum(Model.c.goal).label('goal'),
+        ]
         group_by = [
             extract(x, Model.c.time) for x in MAPPING[query_params['group_by']]
         ]
@@ -61,11 +62,7 @@ async def get_all(
     if group_by:
         query = query.group_by(*group_by).order_by(*group_by)
     result = await database.fetch_all(query)
-    response = {
-        'production': [],
-        'goal': [],
-        'times': []
-    }
+    response = {'production': [], 'goal': [], 'times': []}
     now = datetime.datetime.now()
     for row in result:
         data = dict(row)

@@ -1,5 +1,4 @@
 import factory
-
 from pytest_factoryboy import register
 
 from src.domain.entities.sprocket import (CreateSprocketTypeDto, SprocketType,

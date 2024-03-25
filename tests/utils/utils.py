@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 
-from src.infraestructure.database.sqlalchemy import init_database, metadata, \
-    database
+from src.infraestructure.database.sqlalchemy import (database, init_database,
+                                                     metadata)
 
 
 def assert_validation_error(len_, loc, type_, excinfo):

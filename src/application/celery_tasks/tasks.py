@@ -37,7 +37,7 @@ def _get_sprocket_factory_data():
                         "time": time,
                         "factory_id": factory.id,
                         "sprocket_type_id": sp_type.id,
-                        "goal": response_data['goal']
+                        "goal": response_data['goal'],
                     }
                 )
             )

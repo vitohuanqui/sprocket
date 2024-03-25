@@ -3,8 +3,8 @@ from typing import Iterable, Optional, Protocol
 from src.domain.entities.factory import Factory
 from src.domain.entities.sprocket import SprocketType
 from src.domain.entities.sprocket_factory_data import (
-    CreateSprocketFactoryDataDto, RetrieveSprocketFactoryDataDto,
-    SprocketFactoryData, UpdateSprocketFactoryDataDto, ResponseFactoryDataDto)
+    CreateSprocketFactoryDataDto, ResponseFactoryDataDto, SprocketFactoryData,
+    UpdateSprocketFactoryDataDto)
 
 
 class SprocketFactoryDataRepository(Protocol):

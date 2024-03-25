@@ -60,7 +60,9 @@ async def _populate_sprocket_factory_data(
             values.append(
                 {
                     'production': val,
-                    'time': datetime.datetime.fromtimestamp(factory['factory']['chart_data']['time'][idx]),
+                    'time': datetime.datetime.fromtimestamp(
+                        factory['factory']['chart_data']['time'][idx]
+                    ),
                     'goal': factory['factory']['chart_data'][
                         'sprocket_production_goal'
                     ][idx],

@@ -1,5 +1,5 @@
 from sqlalchemy.schema import Column, Table
-from sqlalchemy.types import Boolean, DateTime, Integer
+from sqlalchemy.types import DateTime, Integer
 
 from src.infraestructure.database.sqlalchemy import metadata
 

@@ -6,8 +6,8 @@ from fastapi.routing import APIRouter
 
 from src.application.container import get_dependencies
 from src.domain.entities.sprocket_factory_data import (
-    CreateSprocketFactoryDataDto, RetrieveSprocketFactoryDataDto,
-    SprocketFactoryData, UpdateSprocketFactoryDataDto, ResponseFactoryDataDto)
+    CreateSprocketFactoryDataDto, ResponseFactoryDataDto, SprocketFactoryData,
+    UpdateSprocketFactoryDataDto)
 from src.domain.services import (factory_service,
                                  sprocket_factory_data_service,
                                  sprocket_service)

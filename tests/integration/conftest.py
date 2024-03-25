@@ -1,12 +1,11 @@
 import pytest
-
 from fastapi.testclient import TestClient
 from pytest_factoryboy import register
 
 from src.application.app import init_app
 from src.infraestructure.config.enviroment import get_settings
-from tests.factories.entity_factories import CreateSprocketTypeDtoFactory, \
-    CreateSprocketFactoryDataDtoFactory, SprocketFactoryDataFactory
+from tests.factories.entity_factories import (CreateSprocketTypeDtoFactory,
+                                              SprocketFactoryDataFactory)
 from tests.utils.utils import clear_database
 
 

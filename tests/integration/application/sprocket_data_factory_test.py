@@ -1,7 +1,4 @@
-
 import pytest
-
-from tests.factories.model_factories import insert_sp_data_item
 
 
 @pytest.mark.integration
