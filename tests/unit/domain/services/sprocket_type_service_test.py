@@ -12,13 +12,13 @@ def repository(mock_module):
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_create(
-    repository, create_sprocket_type_dto_factory, sprocket_type_factory
+    repository, create_sp_type_dto_factory, sprocket_type_factory
 ):
     repository.create.return_value = sprocket_type_factory
     result = await sprocket_service.create(
-        repository, create_sprocket_type_dto_factory
+        repository, create_sp_type_dto_factory
     )
-    repository.create.assert_called_once_with(create_sprocket_type_dto_factory)
+    repository.create.assert_called_once_with(create_sp_type_dto_factory)
     assert result == sprocket_type_factory
 
 

@@ -1,5 +1,7 @@
 import factory
 
+from pytest_factoryboy import register
+
 from src.domain.entities.sprocket import (CreateSprocketTypeDto, SprocketType,
                                           UpdateSprocketTypeDto)
 from src.domain.entities.sprocket_factory_data import (
@@ -7,6 +9,7 @@ from src.domain.entities.sprocket_factory_data import (
     SprocketFactoryData, UpdateSprocketFactoryDataDto)
 
 
+@register(_name="create_sp_type_dto_factory")
 class CreateSprocketTypeDtoFactory(factory.Factory):
     class Meta:
         model = CreateSprocketTypeDto
@@ -38,6 +41,7 @@ class SprocketTypeFactory(factory.Factory):
     pitch = factory.Faker("pyint")
 
 
+@register(_name="create_sprocket_data_dto_factory")
 class CreateSprocketFactoryDataDtoFactory(factory.Factory):
     class Meta:
         model = CreateSprocketFactoryDataDto
@@ -46,7 +50,7 @@ class CreateSprocketFactoryDataDtoFactory(factory.Factory):
     factory_id = 1
     sprocket_type_id = 1
     time = factory.Faker("date_time")
-    is_goal = False
+    goal = factory.Faker("pyint", min_value=1)
 
 
 class UpdateSprocketFactoryDataDtoFactory(factory.Factory):
@@ -66,7 +70,7 @@ class SprocketFactoryDataFactory(factory.Factory):
     factory_id = 1
     sprocket_type_id = 1
     time = factory.Faker("date_time")
-    is_goal = False
+    goal = factory.Faker("pyint", min_value=1)
 
 
 class RetrieveSprocketFactoryDataDtoFactory(factory.Factory):
