@@ -37,18 +37,7 @@ def _get_sprocket_factory_data():
                         "time": time,
                         "factory_id": factory.id,
                         "sprocket_type_id": sp_type.id,
-                        "is_goal": False,
-                    }
-                )
-            )
-            data.append(
-                CreateSprocketFactoryDataDto(
-                    **{
-                        "production": response_data['goal'],
-                        "time": time,
-                        "factory_id": factory.id,
-                        "sprocket_type_id": sp_type.id,
-                        "is_goal": True,
+                        "goal": response_data['goal']
                     }
                 )
             )

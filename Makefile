@@ -69,3 +69,11 @@ ssh:
 .PHONY: tests
 tests:
 	docker-compose -f setup/docker/docker-compose.yml exec app bash -c "pytest"
+
+.PHONY: seed
+seed:
+	docker-compose -f setup/docker/docker-compose.yml exec app bash -c "python fill_database.py"
+
+.PHONY: migrate
+migrate:
+	docker exec -it fastapi-app-sprocket-container bash -c "alembic upgrade head"

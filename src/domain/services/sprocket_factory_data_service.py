@@ -4,7 +4,7 @@ from src.domain.entities.factory import Factory
 from src.domain.entities.sprocket import SprocketType
 from src.domain.entities.sprocket_factory_data import (
     CreateSprocketFactoryDataDto, RetrieveSprocketFactoryDataDto,
-    SprocketFactoryData, UpdateSprocketFactoryDataDto)
+    SprocketFactoryData, UpdateSprocketFactoryDataDto, ResponseFactoryDataDto)
 from src.domain.repositories.sprocket_factory_data_repository import \
     SprocketFactoryDataRepository
 
@@ -28,7 +28,7 @@ async def get(
 
 async def get_all(
     repository: SprocketFactoryDataRepository, query_params: dict = None
-) -> Iterable[RetrieveSprocketFactoryDataDto]:
+) -> ResponseFactoryDataDto:
     return await repository.get_all(query_params)
 
 

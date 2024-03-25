@@ -1,3 +1,4 @@
+import datetime
 import json
 import logging
 from typing import Any, Dict, Iterable
@@ -59,19 +60,10 @@ async def _populate_sprocket_factory_data(
             values.append(
                 {
                     'production': val,
-                    'time': factory['factory']['chart_data']['time'][idx],
-                    'is_goal': False,
-                    'factory_id': factory_id,
-                    'sprocket_type_id': sprocket_type_id,
-                }
-            )
-            values.append(
-                {
-                    'production': factory['factory']['chart_data'][
+                    'time': datetime.datetime.fromtimestamp(factory['factory']['chart_data']['time'][idx]),
+                    'goal': factory['factory']['chart_data'][
                         'sprocket_production_goal'
                     ][idx],
-                    'time': factory['factory']['chart_data']['time'][idx],
-                    'is_goal': True,
                     'factory_id': factory_id,
                     'sprocket_type_id': sprocket_type_id,
                 }
