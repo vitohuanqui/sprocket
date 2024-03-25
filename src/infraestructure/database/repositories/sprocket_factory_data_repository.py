@@ -7,7 +7,7 @@ from src.domain.entities.factory import Factory
 from src.domain.entities.sprocket import SprocketType
 from src.domain.entities.sprocket_factory_data import (
     CreateSprocketFactoryDataDto, RetrieveSprocketFactoryDataDto,
-    SprocketFactoryData, UpdateSprocketFactoryDataDto)
+    SprocketFactoryData, UpdateSprocketFactoryDataDto, ResponseFactoryDataDto)
 from src.infraestructure.database.models.sprocket_factory_data import \
     SprocketFactoryData as Model
 from src.infraestructure.database.sqlalchemy import database
@@ -15,8 +15,8 @@ from src.infraestructure.database.sqlalchemy import database
 
 async def get_all(
     query_params: dict = None,
-) -> Iterable[RetrieveSprocketFactoryDataDto]:
-    params = [Model.c.is_goal == False]
+) -> ResponseFactoryDataDto:
+    params = []
     MAPPING = {
         'year': ['year'],
         'month': ['year', 'month'],
@@ -42,9 +42,11 @@ async def get_all(
             Model.c.sprocket_type_id >= int(query_params['sprocket_type'])
         )
     group_by = []
-    select_list = [Model.c.production, Model.c.time]
+    select_list = [Model.c.production, Model.c.time, Model.c.goal]
     if 'group_by' in query_params and query_params['group_by'] in MAPPING:
-        select_list = [func.sum(Model.c.production).label('production')]
+        select_list = [
+            func.sum(Model.c.production).label('production'),
+            func.sum(Model.c.goal).label('goal')]
         group_by = [
             extract(x, Model.c.time) for x in MAPPING[query_params['group_by']]
         ]
@@ -59,7 +61,11 @@ async def get_all(
     if group_by:
         query = query.group_by(*group_by).order_by(*group_by)
     result = await database.fetch_all(query)
-    response = []
+    response = {
+        'production': [],
+        'goal': [],
+        'times': []
+    }
     now = datetime.datetime.now()
     for row in result:
         data = dict(row)
@@ -71,13 +77,11 @@ async def get_all(
                 int(data.get('day', now.day)),
                 int(data.get('hour', now.hour)),
             )
-        response.append(
-            RetrieveSprocketFactoryDataDto.parse_obj(
-                {"production": data.get('production', 0), "time": time}
-            )
-        )
+        response['production'].append(data.get('production', 0))
+        response['goal'].append(data.get('goal', 0))
+        response['times'].append(time.timestamp())
 
-    return response
+    return ResponseFactoryDataDto.parse_obj(response)
 
 
 async def get_all_by_factory(

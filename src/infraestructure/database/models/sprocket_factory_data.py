@@ -10,6 +10,6 @@ SprocketFactoryData = Table(
     Column("sprocket_type_id", Integer),
     Column("factory_id", Integer),
     Column("production", Integer),
-    Column("is_goal", Boolean),
+    Column("goal", Integer, default=0),
     Column("time", DateTime(timezone=True)),
 )

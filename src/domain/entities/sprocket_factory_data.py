@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 class SprocketFactoryData(BaseModel):
     id: int
-    is_goal: bool
+    goal: int
     production: int
     factory_id: int
     time: datetime
@@ -22,7 +22,7 @@ class CreateSprocketFactoryDataDto(BaseModel):
     factory_id: int
     sprocket_type_id: int
     time: Optional[datetime] = datetime.now
-    is_goal: Optional[bool] = False
+    goal: int
 
     class Config:
         allow_mutation = False
@@ -30,6 +30,7 @@ class CreateSprocketFactoryDataDto(BaseModel):
 
 class UpdateSprocketFactoryDataDto(BaseModel):
     production: Optional[int]
+    goal: Optional[int]
     time: Optional[datetime]
 
     class Config:
@@ -39,6 +40,16 @@ class UpdateSprocketFactoryDataDto(BaseModel):
 class RetrieveSprocketFactoryDataDto(BaseModel):
     production: int
     time: datetime
+    goal: int
+
+    class Config:
+        allow_mutation = False
+
+
+class ResponseFactoryDataDto(BaseModel):
+    production: list[int]
+    goal: list[int]
+    times: list[int]
 
     class Config:
         allow_mutation = False
