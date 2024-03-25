@@ -64,3 +64,7 @@ ssh-db-dev:
 .PHONY: my_target
 ssh:
 	docker-compose -f setup/docker/docker-compose.yml exec $(dst) /bin/bash
+
+.PHONY: tests
+tests:
+	docker-compose -f setup/docker/docker-compose.yml exec app bash -c "pytest"
