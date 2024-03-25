@@ -79,7 +79,7 @@ async def get_all(
             )
         response['production'].append(data.get('production', 0))
         response['goal'].append(data.get('goal', 0))
-        response['times'].append(time.timestamp())
+        response['times'].append(int(time.timestamp()))
 
     return ResponseFactoryDataDto.parse_obj(response)
 

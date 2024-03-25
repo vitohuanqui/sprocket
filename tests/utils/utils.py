@@ -1,3 +1,9 @@
+from contextlib import contextmanager
+
+from src.infraestructure.database.sqlalchemy import init_database, metadata, \
+    database
+
+
 def assert_validation_error(len_, loc, type_, excinfo):
     def write_message(expected, gotten):
         return f"expected: '{expected}', got: '{gotten}'"
@@ -10,3 +16,21 @@ def assert_validation_error(len_, loc, type_, excinfo):
     assert error["type"] == type_, write_message(
         type_, error.get("type", None)
     )
+
+
+def _truncate_tables():
+    database.execute(
+        """TRUNCATE {} RESTART IDENTITY""".format(
+            ",".join(
+                f'"{table.name}"' for table in reversed(metadata.sorted_tables)
+            )
+        )
+    )
+
+
+@contextmanager
+def clear_database():
+    init_database()
+    _truncate_tables()
+    yield
+    _truncate_tables()

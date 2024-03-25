@@ -4,7 +4,6 @@ from pytest_factoryboy import register
 from tests.factories.entity_factories import *
 
 FACTORIES = [
-    CreateSprocketTypeDtoFactory,
     UpdateSprocketTypeDtoFactory,
     SprocketTypeFactory,
 ]

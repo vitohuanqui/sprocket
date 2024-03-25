@@ -55,6 +55,12 @@ make ssh-dev
 the endpoint http://localhost:8000/sprocket-data-factory you can pass query params
 http://localhost:8000/sprocket-data-factory?end_date=YYYY-MM-DD&start_date=YYYY-MM-DD&factory={factory_id}&sprocket_type={sprocket_type_id}&group_by={year|month|day|hour}
 
+To stop the server just run
+```bash
+make stop
+```
+
+
 # Run tests
 
 You can run the tests using the following commands:
