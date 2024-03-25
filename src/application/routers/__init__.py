@@ -1,6 +1,7 @@
 from fastapi.applications import FastAPI
 
-from src.application.routers import factory, sprocket_type, sprocket_data_factory, root
+from src.application.routers import (factory, root, sprocket_data_factory,
+                                     sprocket_type)
 
 
 def register_routers(app: FastAPI) -> FastAPI:

@@ -1,5 +1,5 @@
 from sqlalchemy.schema import Column, Table
-from sqlalchemy.types import Integer, Text
+from sqlalchemy.types import Integer
 
 from src.infraestructure.database.sqlalchemy import metadata
 

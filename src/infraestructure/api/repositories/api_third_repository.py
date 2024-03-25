@@ -1,6 +1,6 @@
-import requests
-
 from typing import Any
+
+import requests
 
 
 def fetch_data(url) -> Any:

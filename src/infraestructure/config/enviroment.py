@@ -1,7 +1,6 @@
 from typing import Callable
 
 from dotenv import load_dotenv
-from pydantic import PostgresDsn
 from pydantic_settings import BaseSettings
 
 
@@ -9,7 +8,9 @@ class Settings(BaseSettings):
     ENV: str = 'DEBUG'
     PYTHONPATH: str = '/app/'
     LOG_LEVEL: str = 'info'
-    DATABASE_URL: str = 'postgresql://fastapi:fastapi@app-database:5432/fastapi'
+    DATABASE_URL: str = (
+        'postgresql://fastapi:fastapi@app-database:5432/fastapi'
+    )
     DEBUG: bool = True
     HOST: str = '0.0.0.0'
     PORT: int = '8000'

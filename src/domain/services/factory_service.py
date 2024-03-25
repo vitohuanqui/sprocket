@@ -1,15 +1,13 @@
 from typing import Iterable, Optional
 
-from src.domain.entities.factory import (
-    Factory,
-    CreateFactoryDto,
-    UpdateFactoryDto,
-)
+from src.domain.entities.factory import (CreateFactoryDto, Factory,
+                                         UpdateFactoryDto)
 from src.domain.repositories.factory_repository import FactoryRepository
 
 
 async def create(
-    repository: FactoryRepository, dto: CreateFactoryDto,
+    repository: FactoryRepository,
+    dto: CreateFactoryDto,
 ) -> Factory:
     return await repository.create(dto)
 

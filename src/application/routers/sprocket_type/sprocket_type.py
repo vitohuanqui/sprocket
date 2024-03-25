@@ -1,18 +1,14 @@
 from typing import List
-from fastapi.exceptions import HTTPException
+
 from fastapi.responses import JSONResponse  # type: ignore
 from fastapi.routing import APIRouter
 
 from src.application.container import get_dependencies
-from src.domain.entities.sprocket import (
-    SprocketType,
-    CreateSprocketTypeDto,
-    UpdateSprocketTypeDto,
-)
+from src.domain.entities.sprocket import (CreateSprocketTypeDto, SprocketType,
+                                          UpdateSprocketTypeDto)
 from src.domain.services import sprocket_service
 # from src.domain.services.exceptions import *
 from src.infraestructure.database.sqlalchemy import database
-
 
 repository = get_dependencies().sprocket_repository
 router = APIRouter(default_response_class=JSONResponse)
@@ -43,7 +39,9 @@ async def create(dto: CreateSprocketTypeDto):
 async def delete(sprocket_type_id: int):
     result = await sprocket_service.delete(repository, sprocket_type_id)
     status_code = 204 if result else 404
-    return JSONResponse(status_code=status_code, content="Sprocket Type deleted")
+    return JSONResponse(
+        status_code=status_code, content="Sprocket Type deleted"
+    )
 
 
 @router.get(
@@ -89,8 +87,10 @@ async def get(sprocket_type_id: int):
     },
 )
 @database.transaction()
-async def update(
-    dto: UpdateSprocketTypeDto, sprocket_type_id: int
-):
+async def update(dto: UpdateSprocketTypeDto, sprocket_type_id: int):
     item = await sprocket_service.update(repository, dto, sprocket_type_id)
-    return item if item else JSONResponse(status_code=404, content="Sprocket Type not Found")
+    return (
+        item
+        if item
+        else JSONResponse(status_code=404, content="Sprocket Type not Found")
+    )

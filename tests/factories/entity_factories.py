@@ -1,8 +1,10 @@
 import factory
 
-from src.domain.entities.sprocket import CreateSprocketTypeDto, UpdateSprocketTypeDto, SprocketType
-from src.domain.entities.sprocket_factory_data import CreateSprocketFactoryDataDto, UpdateSprocketFactoryDataDto, SprocketFactoryData, RetrieveSprocketFactoryDataDto
-from src.domain.entities.factory import Factory, UpdateFactoryDto, CreateFactoryDto
+from src.domain.entities.sprocket import (CreateSprocketTypeDto, SprocketType,
+                                          UpdateSprocketTypeDto)
+from src.domain.entities.sprocket_factory_data import (
+    CreateSprocketFactoryDataDto, RetrieveSprocketFactoryDataDto,
+    SprocketFactoryData, UpdateSprocketFactoryDataDto)
 
 
 class CreateSprocketTypeDtoFactory(factory.Factory):

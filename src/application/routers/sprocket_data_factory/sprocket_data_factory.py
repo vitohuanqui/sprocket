@@ -1,19 +1,18 @@
 from typing import List
-from fastapi.exceptions import HTTPException
+
 from fastapi.requests import Request
 from fastapi.responses import JSONResponse  # type: ignore
 from fastapi.routing import APIRouter
 
 from src.application.container import get_dependencies
 from src.domain.entities.sprocket_factory_data import (
-    SprocketFactoryData,
-    CreateSprocketFactoryDataDto,
-    UpdateSprocketFactoryDataDto, RetrieveSprocketFactoryDataDto,
-)
-from src.domain.services import sprocket_factory_data_service, sprocket_service, factory_service
+    CreateSprocketFactoryDataDto, RetrieveSprocketFactoryDataDto,
+    SprocketFactoryData, UpdateSprocketFactoryDataDto)
+from src.domain.services import (factory_service,
+                                 sprocket_factory_data_service,
+                                 sprocket_service)
 # from src.domain.services.exceptions import *
 from src.infraestructure.database.sqlalchemy import database
-
 
 repository = get_dependencies().sprocket_factory_data_repository
 sprocket_type_repository = get_dependencies().sprocket_repository
@@ -44,9 +43,13 @@ async def create(dto: CreateSprocketFactoryDataDto):
 )
 @database.transaction()
 async def delete(sprocket_type_id: int):
-    result = await sprocket_factory_data_service.delete(repository, sprocket_type_id)
+    result = await sprocket_factory_data_service.delete(
+        repository, sprocket_type_id
+    )
     status_code = 204 if result else 404
-    return JSONResponse(status_code=status_code, content="Sprocket Type deleted")
+    return JSONResponse(
+        status_code=status_code, content="Sprocket Type deleted"
+    )
 
 
 @router.get(
@@ -61,7 +64,9 @@ async def delete(sprocket_type_id: int):
 @database.transaction()
 async def get_all(request: Request):
     params = dict(request.query_params)
-    return list(await sprocket_factory_data_service.get_all(repository, params))
+    return list(
+        await sprocket_factory_data_service.get_all(repository, params)
+    )
 
 
 @router.get(
@@ -76,7 +81,11 @@ async def get_all(request: Request):
 @database.transaction()
 async def get_all_by_factory(factory_id: int):
     factory = await factory_service.get(factory_repository, factory_id)
-    return list(await sprocket_factory_data_service.get_all_by_factory(repository, factory))
+    return list(
+        await sprocket_factory_data_service.get_all_by_factory(
+            repository, factory
+        )
+    )
 
 
 @router.get(
@@ -90,8 +99,14 @@ async def get_all_by_factory(factory_id: int):
 )
 @database.transaction()
 async def get_all_by_sprocket_type(sprocket_type_id: int):
-    sprocket_type = await sprocket_service.get(sprocket_type_repository, sprocket_type_id)
-    return list(await sprocket_factory_data_service.get_all_by_sprocket_type(repository, sprocket_type))
+    sprocket_type = await sprocket_service.get(
+        sprocket_type_repository, sprocket_type_id
+    )
+    return list(
+        await sprocket_factory_data_service.get_all_by_sprocket_type(
+            repository, sprocket_type
+        )
+    )
 
 
 @router.get(
@@ -106,8 +121,14 @@ async def get_all_by_sprocket_type(sprocket_type_id: int):
 @database.transaction()
 async def get_all_by_factory(factory_id: int, sprocket_type_id: int):
     factory = await factory_service.get(factory_repository, factory_id)
-    sprocket_type = await sprocket_service.get(sprocket_type_repository, sprocket_type_id)
-    return list(await sprocket_factory_data_service.get_all_by_sprocket_type_and_factory(repository, sprocket_type, factory))
+    sprocket_type = await sprocket_service.get(
+        sprocket_type_repository, sprocket_type_id
+    )
+    return list(
+        await sprocket_factory_data_service.get_all_by_sprocket_type_and_factory(
+            repository, sprocket_type, factory
+        )
+    )
 
 
 @router.get(
@@ -122,7 +143,9 @@ async def get_all_by_factory(factory_id: int, sprocket_type_id: int):
 )
 @database.transaction()
 async def get(sprocket_type_id: int):
-    item = await sprocket_factory_data_service.get(repository, sprocket_type_id)
+    item = await sprocket_factory_data_service.get(
+        repository, sprocket_type_id
+    )
     if not item:
         return JSONResponse(status_code=404, content="Sprocket Type retrived")
     return item
@@ -139,8 +162,12 @@ async def get(sprocket_type_id: int):
     },
 )
 @database.transaction()
-async def update(
-    dto: UpdateSprocketFactoryDataDto, sprocket_type_id: int
-):
-    item = await sprocket_factory_data_service.update(repository, dto, sprocket_type_id)
-    return item if item else JSONResponse(status_code=404, content="Sprocket Type not Found")
+async def update(dto: UpdateSprocketFactoryDataDto, sprocket_type_id: int):
+    item = await sprocket_factory_data_service.update(
+        repository, dto, sprocket_type_id
+    )
+    return (
+        item
+        if item
+        else JSONResponse(status_code=404, content="Sprocket Type not Found")
+    )

@@ -1,7 +1,9 @@
-from typing import Optional, Iterable
+from typing import Iterable, Optional
 
-from src.domain.entities.sprocket import SprocketType, CreateSprocketTypeDto, UpdateSprocketTypeDto
-from src.infraestructure.database.models.sprocket_type import SprocketType as Model
+from src.domain.entities.sprocket import (CreateSprocketTypeDto, SprocketType,
+                                          UpdateSprocketTypeDto)
+from src.infraestructure.database.models.sprocket_type import \
+    SprocketType as Model
 from src.infraestructure.database.sqlalchemy import database
 
 
@@ -27,15 +29,13 @@ async def get_all() -> Iterable[SprocketType]:
     return (SprocketType.parse_obj(dict(r)) for r in result)
 
 
-async def update(dto: UpdateSprocketTypeDto, id_: int) -> Optional[SprocketType]:
+async def update(
+    dto: UpdateSprocketTypeDto, id_: int
+) -> Optional[SprocketType]:
     if not await get(id_):
         return None
     values = dto.dict(exclude_unset=True)
-    query = (
-        Model.update()
-        .where(Model.c.id == id_)
-        .values(**values)
-    )
+    query = Model.update().where(Model.c.id == id_).values(**values)
     await database.execute(query)
 
     return await get(id_)
@@ -45,9 +45,6 @@ async def delete(id_: int) -> bool:
     if not await get(id_):
         return False
 
-    query = (
-        Model.delete()
-        .where(Model.c.id == id_)
-    )
+    query = Model.delete().where(Model.c.id == id_)
     await database.execute(query)
     return True

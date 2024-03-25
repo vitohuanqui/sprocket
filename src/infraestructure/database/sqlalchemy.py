@@ -39,12 +39,15 @@ async def disconnect_database():
 
 def init_database() -> None:
     import src.infraestructure.database.models  # noqa: F401
+
     metadata.bind = create_engine(_SETTINGS.DATABASE_URL, poolclass=NullPool)
 
 
 async def truncate_database() -> None:
     await database.execute(
         """TRUNCATE {} RESTART IDENTITY""".format(
-            ",".join(f'"{table.name}"' for table in reversed(metadata.sorted_tables))
+            ",".join(
+                f'"{table.name}"' for table in reversed(metadata.sorted_tables)
+            )
         )
     )

@@ -4,30 +4,24 @@ from typing import Any, Dict
 import pytest
 from pydantic import ValidationError
 
-from tests.utils.utils import assert_validation_error
 from src.domain.entities.sprocket import CreateSprocketTypeDto
-
+from tests.utils.utils import assert_validation_error
 
 DataType = Dict[str, Any]
 
 
 @pytest.fixture(name="valid_data")
 def valid_data_fixture() -> DataType:
-    return {
-      "teeth": 5,
-      "pitch_diameter": 5,
-      "outside_diameter": 6,
-      "pitch": 1
-    }
+    return {"teeth": 5, "pitch_diameter": 5, "outside_diameter": 6, "pitch": 1}
 
 
 @pytest.fixture(name="invalid_data")
 def invalid_data_fixture() -> DataType:
     return {
-      "teeth": "teeth",
-      "pitch_diameter": 5,
-      "outside_diameter": 6,
-      "pitch": 1
+        "teeth": "teeth",
+        "pitch_diameter": 5,
+        "outside_diameter": 6,
+        "pitch": 1,
     }
 
 

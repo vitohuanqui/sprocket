@@ -1,6 +1,7 @@
-from typing import Optional, Iterable
+from typing import Iterable, Optional
 
-from src.domain.entities.factory import Factory, CreateFactoryDto, UpdateFactoryDto
+from src.domain.entities.factory import (CreateFactoryDto, Factory,
+                                         UpdateFactoryDto)
 from src.infraestructure.database.models.factory import Factory as Model
 from src.infraestructure.database.sqlalchemy import database
 
@@ -31,11 +32,7 @@ async def update(dto: UpdateFactoryDto, id_: int) -> Optional[Factory]:
     if not await get(id_):
         return None
     values = dto.dict(exclude_unset=True)
-    query = (
-        Model.update()
-        .where(Model.c.id == id_)
-        .values(**values)
-    )
+    query = Model.update().where(Model.c.id == id_).values(**values)
     await database.execute(query)
 
     return await get(id_)
@@ -45,9 +42,6 @@ async def delete(id_: int) -> bool:
     if not await get(id_):
         return False
 
-    query = (
-        Model.delete()
-        .where(Model.c.id == id_)
-    )
+    query = Model.delete().where(Model.c.id == id_)
     await database.execute(query)
     return True

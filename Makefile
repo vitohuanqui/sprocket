@@ -22,12 +22,13 @@ test:
 	@echo "--> Running unittest"
 	pytest --verbose --cov=src --cov=tests --cov-report=term-missing --cov-report=xml:.artifacts/coverage.xml --junit-xml=.artifacts/tests.xml
 
-.PHONY: black
-black:
+.PHONY: code-black
+code-black:
 	@echo "--> Format the python code"
-	autoflake --remove-all-unused-imports --remove-unused-variables  --recursive --in-place src/ tests/
-	black -S -l 79 src tests
-	isort --recursive --apply src tests
+	docker exec -it fastapi-app-sprocket-container bash -c "autoflake --remove-all-unused-imports --remove-unused-variables  --recursive --in-place src/ tests/"
+	docker exec -it fastapi-app-sprocket-container bash -c "black -S -l 79 src tests"
+	docker exec -it fastapi-app-sprocket-container bash -c "isort --recursive --apply src tests"
+
 
 .PHONY: start
 start:

@@ -1,8 +1,7 @@
 import uvicorn
 
-from src.infraestructure.config.enviroment import get_settings
 from src.application.app import init_app
-
+from src.infraestructure.config.enviroment import get_settings
 
 _SETTINGS = get_settings()
 

@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 
 from src.infraestructure.config.enviroment import get_settings
 
-
 router = APIRouter()
 
 

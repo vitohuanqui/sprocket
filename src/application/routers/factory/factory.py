@@ -1,18 +1,14 @@
 from typing import List
-from fastapi.exceptions import HTTPException
+
 from fastapi.responses import JSONResponse  # type: ignore
 from fastapi.routing import APIRouter
 
 from src.application.container import get_dependencies
-from src.domain.entities.factory import (
-    Factory,
-    CreateFactoryDto,
-    UpdateFactoryDto,
-)
+from src.domain.entities.factory import (CreateFactoryDto, Factory,
+                                         UpdateFactoryDto)
 from src.domain.services import factory_service
 # from src.domain.services.exceptions import *
 from src.infraestructure.database.sqlalchemy import database
-
 
 repository = get_dependencies().factory_repository
 router = APIRouter(default_response_class=JSONResponse)
@@ -89,8 +85,10 @@ async def get(factory_id: int):
     },
 )
 @database.transaction()
-async def update(
-    dto: UpdateFactoryDto, factory_id: int
-):
+async def update(dto: UpdateFactoryDto, factory_id: int):
     item = await factory_service.update(repository, dto, factory_id)
-    return item if item else JSONResponse(status_code=404, content="Factory not Found")
+    return (
+        item
+        if item
+        else JSONResponse(status_code=404, content="Factory not Found")
+    )

@@ -7,4 +7,6 @@ def assert_validation_error(len_, loc, type_, excinfo):
 
     error, *_ = errors
     assert error["loc"] == (loc,), write_message(loc, error.get("loc", None))
-    assert error["type"] == type_, write_message(type_, error.get("type", None))
+    assert error["type"] == type_, write_message(
+        type_, error.get("type", None)
+    )

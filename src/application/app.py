@@ -3,8 +3,10 @@ from toolz import pipe
 
 from src.application.routers import register_routers as register_routers
 from src.infraestructure.config.enviroment import Settings
-from src.infraestructure.database.sqlalchemy import connect_database, disconnect_database
-from src.infraestructure.database.sqlalchemy import init_database as init_pgsql_db
+from src.infraestructure.database.sqlalchemy import (connect_database,
+                                                     disconnect_database)
+from src.infraestructure.database.sqlalchemy import \
+    init_database as init_pgsql_db
 
 
 def create_instance(settings: Settings) -> FastAPI:

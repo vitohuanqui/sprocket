@@ -1,12 +1,12 @@
 import asyncio
-from datetime import timedelta
 
 from celery import Celery
 
 from src.infraestructure.cellery.config import settings as celery_settings
+from src.infraestructure.database.sqlalchemy import connect_database
+from src.infraestructure.database.sqlalchemy import \
+    init_database as init_pgsql_db
 
-from src.infraestructure.database.sqlalchemy import connect_database, disconnect_database
-from src.infraestructure.database.sqlalchemy import init_database as init_pgsql_db
 
 async def start_db():
     init_pgsql_db()
