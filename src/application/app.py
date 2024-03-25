@@ -1,3 +1,5 @@
+import sentry_sdk
+
 from fastapi.applications import FastAPI
 from toolz import pipe
 
@@ -5,11 +7,15 @@ from src.application.routers import register_routers as register_routers
 from src.infraestructure.config.enviroment import Settings
 from src.infraestructure.database.sqlalchemy import (connect_database,
                                                      disconnect_database)
-from src.infraestructure.database.sqlalchemy import \
-    init_database as init_pgsql_db
+from src.infraestructure.database.sqlalchemy import init_database as init_pgsql_db
 
 
 def create_instance(settings: Settings) -> FastAPI:
+    if not settings.DEBUG:
+        sentry_sdk.init(
+            dsn=settings.DSN_SENTRY,
+            enable_tracing=True,
+        )
     return FastAPI(
         debug=settings.DEBUG,
         title=settings.TITLE,

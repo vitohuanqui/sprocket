@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     RELOAD: bool = True
     CELERY_BROKER_URL: str = "redis://app-redis:6379/0"
     CELERY_RESULT_BACKEND: str = "redis://app-redis:6379/0"
+    SLACK_API_TOKEN: str = "slack_token"
+    SLACK_CHANNEL: str = "channel"
 
 
 def _configure_initial_settings() -> Callable[[], Settings]:

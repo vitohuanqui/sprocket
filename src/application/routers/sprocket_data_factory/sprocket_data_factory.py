@@ -79,6 +79,8 @@ async def get_all(request: Request):
 @database.transaction()
 async def get_all_by_factory(factory_id: int):
     factory = await factory_service.get(factory_repository, factory_id)
+    if not factory:
+        return JSONResponse(status_code=404)
     return list(
         await sprocket_factory_data_service.get_all_by_factory(
             repository, factory
